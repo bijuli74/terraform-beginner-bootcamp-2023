@@ -1,0 +1,83 @@
+```sh
+tf plan
+╷
+│ Error: Unsupported attribute
+│ 
+│   on outputs.tf line 3, in output "bucket_name":
+│    3:   value       = module.terrahouse_aws.bucket_name
+│     ├────────────────
+│     │ module.terrahouse_aws is a object, known only after apply
+│ 
+│ This object does not have an attribute named "bucket_name".
+╵
+╷
+│ Error: Unsupported attribute
+│ 
+│   on outputs.tf line 9, in output "s3_website_endpoint":
+│    9:   value       = module.terrahouse_aws.s3_website_endpoint
+│     ├────────────────
+│     │ module.terrahouse_aws is a object, known only after apply
+│ 
+│ This object does not have an attribute named "s3_website_endpoint".
+╵
+╷
+│ Error: Unsupported attribute
+│ 
+│   on outputs.tf line 15, in output "cloudfront_url":
+│   15:   value       = module.terrahouse_aws.cloudfront_url
+│     ├────────────────
+│     │ module.terrahouse_aws is a object, known only after apply
+│ 
+│ This object does not have an attribute named "cloudfront_url".
+╵
+╷
+│ Error: Invalid resource type
+│ 
+│   on modules/terrahouse_aws/resource-cdn.tf line 67, in resource "terraform_data" "invalidate_cache":
+│   67: resource "terraform_data" "invalidate_cache" {
+│ 
+│ The provider terraform.io/builtin/terraform does not support resource type "terraform_data".
+╵
+╷
+│ Error: Invalid resource type
+│ 
+│   on modules/terrahouse_aws/resource-storage.tf line 87, in resource "terraform_data" "content_version":
+│   87: resource "terraform_data" "content_version" {
+│ 
+│ The provider terraform.io/builtin/terraform does not support resource type "terraform_data".
+```
+
+To upload a folder called `assets` to an S3 bucket using Terraform, you can use the `aws_s3_bucket_object` resource with a `for_each` loop¹. Here's an example:
+
+```hcl
+provider "aws" {
+  access_key = "ACCESS_KEY_HERE"
+  secret_key = "SECRET_KEY_HERE"
+  region     = "us-east-1"
+}
+
+resource "aws_s3_bucket" "b1" {
+  bucket = "s3-terraform-bucket-lab"
+  acl    = "private"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+resource "aws_s3_bucket_object" "object1" {
+  for_each = fileset("assets/", "*")
+  
+  bucket = aws_s3_bucket.b1.id
+  key    = each.value
+  source = "assets/${each.value}"
+  etag   = filemd5("assets/${each.value}")
+}
+```
+
+In this example, replace `"ACCESS_KEY_HERE"` and `"SECRET_KEY_HERE"` with your AWS access key and secret key¹. The `fileset` function is used to get all the files in the `assets` directory¹. The `for_each` loop is used to iterate over each file in the `assets` directory¹. The `source` attribute is used to specify the path of the file to upload¹. The `etag` attribute is used to ensure the file has not changed since the last upload¹.
+
+After you've set up your Terraform configuration, you can run `terraform plan` to see what changes will be made, and then `terraform apply` to apply the changes¹.
+
+Please note that the bucket name `s3-terraform-bucket-lab` should be unique across all existing bucket names in Amazon S3¹.

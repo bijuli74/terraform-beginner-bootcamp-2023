@@ -29,7 +29,7 @@ module "home_cs_hosting" {
 
 }
 
-resource "terratowns_home" "home_cs" {
+resource "terratowns_home" "home" {
   name            = "History of Counter-Strike"
   description     = <<DESCRIPTION
   Counter-Strike is a multiplayer tactical first person shooter that started 

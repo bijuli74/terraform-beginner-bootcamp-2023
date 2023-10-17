@@ -1,3 +1,5 @@
+teacherseat_user_uuid = "put-user-uuid-here"
+terratowns_access_token = "put-access-token-here"
 terratowns_endpoints="https://terratowns.cloud/api"
 cs = {
     public_path = "/workspace/terraform-beginner-bootcamp-2023/public/cs"

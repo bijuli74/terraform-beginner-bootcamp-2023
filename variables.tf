@@ -17,7 +17,7 @@ variable "cs" {
   })
 }
 
-variable "go" {
+variable "forest" {
   type = object({
     public_path     = string
     content_version = number

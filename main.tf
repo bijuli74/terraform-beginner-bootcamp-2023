@@ -7,9 +7,9 @@ terraform {
   }
 
   cloud {
-    organization = "ExamPro"
+    organization = "bijuli"
     workspaces {
-      name = "terra-house-1"
+      name = "terra-house-sb"
     }
   }
 }
@@ -29,7 +29,7 @@ module "home_cs_hosting" {
 
 }
 
-resource "terratowns_home" "home" {
+resource "terratowns_home" "home_cs" {
   name            = "History of Counter-Strike"
   description     = <<DESCRIPTION
   Counter-Strike is a multiplayer tactical first person shooter that started 
@@ -37,26 +37,26 @@ resource "terratowns_home" "home" {
   biggest FPS games of all time with 1 million+ daily active players.
   DESCRIPTION
   domain_name     = module.home_cs_hosting.domain_name
-  town            = "csing"
+  town            = "gamers-grotto"
   content_version = var.cs.content_version
 }
 
-module "home_yt_hosting" {
+module "home_forest_hosting" {
   source          = "./modules/terrahouse_aws"
   user_uuid       = var.teacherseat_user_uuid
-  public_path     = var.yt.public_path
-  content_version = var.yt.content_version
+  public_path     = var.forest.public_path
+  content_version = var.forest.content_version
 
 }
 
-resource "terratowns_home" "home_yt" {
-  name            = "Design of YouTube"
+resource "terratowns_home" "home_forest" {
+  name            = "Design of Enchanted Forest"
   description     = <<DESCRIPTION
-  Youtube is one of the most popular and extensible biggest streaming video streaming services and the architecture contains various components that enhance user experience. When it comes down to Youtube services, it is been that commonly used in the daily world with tremendous users so the system design corresponding is likely a bit complex. 
+  Want to see cool pictures of pristine, mystical forest. Click Here !!!
   DESCRIPTION
-  domain_name     = module.home_yt_hosting.domain_name
-  town            = "yting"
-  content_version = var.yt.content_version
+  domain_name     = module.home_forest_hosting.domain_name
+  town            = "the-nomad-pad"
+  content_version = var.forest.content_version
 }
 
 
